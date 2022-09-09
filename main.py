@@ -10,15 +10,20 @@ CMD HELPER: 1. Add (new contact) 2. View all 3. Search (contact) 4. Update (cont
 '''
 
 
-class Person(object):
+class Person():
 
     def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: datetime.date = None):
         # planned refactoring to private methods (getter + setter)
-        self.name = name
-        self.address = address
-        self.phone = phone
-        self.email = email
-        self.birthday = birthday
+        if name:
+            self.name = name
+        if address:
+            self.address = address
+        if phone:
+            self.phone = phone
+        if email:
+            self.email = email
+        if birthday:
+            self.birthday = birthday
 
     # @property
     # def name(self):
@@ -36,7 +41,7 @@ class Person(object):
         return "{} {:^15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, self.birthday)
 
 
-class Application(object):
+class Application():
 
     def __init__(self, database):
         self.database = database
@@ -81,11 +86,11 @@ class Application(object):
         return name, address, phone, email, birthday
 
     def update(self):
-        name = input("Enter the name: ")
-        if name in self.persons:
+        _name = input("Enter the name: ")
+        if _name in self.persons:
             print("Found. Enter new details")
             name, address, phone, email, birthday = self.get_details()
-            self.persons[name].__init__(name, address, phone, email, birthday)
+            self.persons[_name].__init__(name, address, phone, email, birthday)
             print("Address book successfully updated")
         else:
             print("Contact not found")
