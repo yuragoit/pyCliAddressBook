@@ -9,8 +9,6 @@ CMD HELPER: 1. Add (new contact) 2. View all 3. Search (contact) 4. Update (cont
 7. File sort 8. Exit
 '''
 
-# some change test
-
 
 class Person():
 
