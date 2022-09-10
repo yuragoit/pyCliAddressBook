@@ -3,12 +3,16 @@ import os
 from datetime import datetime
 from tools import autocompletion as ui, validator
 from dateutil import parser
+from rich.console import Console
+from rich.table import Table
 # import aiopath
 
 CLI_UI = '''
 CMD HELPER: 1. Add (new contact) 2. View all 3. Search (contact) 4. Update (contact) 5. Delete (contact) 6. Reset all 
 7. File sort 8. Exit
 '''
+
+console = Console()
 
 
 class Person():
@@ -26,7 +30,14 @@ class Person():
             self.birthday = parser.parse(birthday)
 
     def __str__(self):
-        return "{} {:>15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, str(self.birthday.date()))
+        table = Table(show_header=False,
+                      header_style="bold blue", show_lines=True)
+        table.add_row(
+            f'[cyan]{self.name}[/cyan]', f'[cyan]{self.address}[/cyan]', f'[cyan]{self.phone}[/cyan]',
+            f'[cyan]{self.email}[/cyan]', f'[cyan]{self.birthday.date()}[/cyan]'
+        )
+        console.print(table)
+        return "-"*56
 
 
 class AddressBook():
@@ -51,10 +62,23 @@ class AddressBook():
 
     def view_all(self):
         if self.persons:
-            print("{} {:>15} {:>15} {:>15} {:>15}".format(
-                'NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'BIRTHDAY'))
-            for person in self.persons.values():
-                print(person)
+            # print("{} {:>15} {:>15} {:>15} {:>15}".format(
+            #     'NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'BIRTHDAY'))
+            table = Table(show_header=True,
+                          header_style="bold blue", show_lines=True)
+            table.add_column("#", style="dim", width=3, justify="center")
+            table.add_column("NAME", min_width=12, justify="center")
+            table.add_column("ADDRESS", min_width=10, justify="center")
+            table.add_column("PHONE", min_width=18, justify="center")
+            table.add_column("EMAIL", min_width=18, justify="center")
+            table.add_column("BIRTHDAY", min_width=15, justify="center")
+            for idx, person in enumerate(self.persons.values(), start=1):
+                _ = person.__dict__
+                table.add_row(
+                    str(idx), f'[cyan]{_["name"]}[/cyan]', f'[cyan]{_["address"]}[/cyan]', f'[cyan]{_["phone"]}[/cyan]',
+                    f'[cyan]{_["email"]}[/cyan]', f'[cyan]{_["birthday"].date()}[/cyan]'
+                )
+            console.print(table)
         else:
             print("No match contacts in database")
 

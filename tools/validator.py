@@ -26,7 +26,7 @@ def phone_check():
         phone = input("Phone: ")
         if not phone:
             break
-        iso_code = input("ISO country code: ")
+        iso_code = input("ISO country code like UA, GB, PL etc.: ")
 
         pattern = phonenumbers.parse(phone, iso_code)
         if not phone or phonenumbers.is_valid_number(pattern):
