@@ -175,8 +175,8 @@ def perform() -> None:
     find_files(path)
     remove_empty_folders(empty_folders)
     rename_folders(folders_to_rename)
-
+    print('sorting is complete')
 
 if __name__ == '__main__':
     perform()
-    print('sorting is complete')
+    
