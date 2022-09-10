@@ -11,11 +11,18 @@ from prompt_toolkit.key_binding import KeyBindings
 cmd = WordCompleter(
     [
         "add",
+        "add_notes",
         "view_all",
+        "view_all_notes",
         "search",
+        "search_notes",
+        "sort_birthday",
         "update",
+        "update_notes",
         "delete",
+        "delete_notes",
         "reset",
+        "reset_notes",
         "file_sort",
         "exit",
     ],

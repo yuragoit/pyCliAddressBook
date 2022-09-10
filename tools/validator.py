@@ -1,4 +1,5 @@
 # Python function to validate an Email
+import datetime
 import re
 
 
@@ -25,9 +26,13 @@ def email_extractor(target):
     return lst
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    # calling run function
-    email_check("ankitrai326@gmail.com")
-    email_extractor("Ghheh ksds khhh@i.ua sdsd ks sdsdfdf15 yuko123@gm.com")
-    phone_check("+380968585858")
+#     # calling run function
+#     email_check("ankitrai326@gmail.com")
+#     email_extractor("Ghheh ksds khhh@i.ua sdsd ks sdsdfdf15 yuko123@gm.com")
+#     phone_check("+380968585858")
+
+
+x = datetime.datetime.now().date()
+print(x)

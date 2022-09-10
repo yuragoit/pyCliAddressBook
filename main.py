@@ -2,6 +2,7 @@ import pickle
 import os
 from datetime import datetime, time
 from tools import autocompletion as ui
+from dateutil import parser
 # import aiopath
 
 CLI_UI = '''
@@ -12,7 +13,7 @@ CMD HELPER: 1. Add (new contact) 2. View all 3. Search (contact) 4. Update (cont
 
 class Person():
 
-    def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: datetime.date = None):
+    def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: datetime = None):
         # planned refactoring to private methods (getter + setter)
         if name:
             self.name = name
@@ -38,10 +39,10 @@ class Person():
     #     return self.__value
 
     def __str__(self):
-        return "{} {:^15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, self.birthday)
+        return "{} {:>15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, str(self.birthday.date()))
 
 
-class Application():
+class AddressBook():
 
     def __init__(self, database):
         self.database = database
@@ -73,6 +74,8 @@ class Application():
     def search(self):
         name = input("Enter the name: ")
         if name in self.persons:
+            # print(self.persons[name].__dict__.values())
+            # print(self.persons[name].__dict__["birthday"])
             print(self.persons[name])
         else:
             print("Contact not found")
@@ -82,7 +85,7 @@ class Application():
         address = input("Address: ")
         phone = input("Phone: ")
         email = input("Email: ")
-        birthday = input("Birthday: ")
+        birthday = parser.parse(input("Birthday: "))
         return name, address, phone, email, birthday
 
     def update(self):
@@ -106,6 +109,37 @@ class Application():
     def reset(self):
         self.persons = {}
 
+    def get_birthdays(self):
+        gap_days = int(input("Enter timedelta for birthday: "))
+        current_date = datetime.now()  # current date
+        gap_days = 30  # gap
+        result = {}
+
+        for name in self.persons:
+            bday = self.persons[name].__dict__["birthday"]
+            try:
+                mappedbday = bday.replace(year=current_date.year)
+            except ValueError:
+                # 29 February cannot be mapped to non-leap year. Choose 28-Feb instead
+                mappedbday = bday.replace(year=current_date.year, day=28)
+
+            if 0 <= (mappedbday - current_date).days < gap_days:
+                try:
+                    result[mappedbday.strftime('%A')].append(name)
+                except KeyError:
+                    result[mappedbday.strftime('%A')] = [name]
+            elif current_date.weekday() == 0:
+                if -2 <= (mappedbday - current_date).days < 0:
+                    try:
+                        result[current_date.strftime('%A')].append(name)
+                    except KeyError:
+                        result[current_date.strftime('%A')] = [name]
+
+        for day, names in result.items():
+            # print(self.persons[name])
+            print(f"Start reminder on {day}: {', '.join(names)}")
+        return result
+
     def __del__(self):
         with open(self.database, 'wb') as db:
             pickle.dump(self.persons, db)
@@ -115,7 +149,7 @@ class Application():
 
 
 def CLI():
-    app = Application('contacts.data')
+    app = AddressBook('contacts.data')
     choice = ''
     while choice != 'exit':
         print(app)
@@ -136,6 +170,8 @@ def CLI():
             # scheduled developing process - integrate module from HW6, HW7
             case 'file_sort':
                 pass
+            case 'sort_birthday':
+                app.get_birthdays()
             case 'exit':
                 print("Exiting...")
             case _:
