@@ -3,6 +3,7 @@ import os
 import re
 from datetime import datetime
 from tools import autocompletion as ui, validator
+from tools import sorting
 from dateutil import parser
 from rich.console import Console
 from rich.table import Table
@@ -205,7 +206,7 @@ def CLI():
                 app.reset()
             # scheduled developing process - integrate module from HW6, HW7
             case 'file_sort':
-                pass
+                sorting.perform()
             case 'sort_birthday':
                 app.get_birthdays()
             case 'exit':
