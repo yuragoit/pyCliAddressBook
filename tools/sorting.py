@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 """
 Sorting files to categorical folders.
 Normalising names of files & folders.
@@ -7,17 +5,13 @@ Remoting empty folders.
 Unpacking archives.
 """
 
->>>>>>> Stashed changes
 from itertools import chain
 
 import os
 from pathlib import Path
 import re
 from shutil import move, unpack_archive
-<<<<<<< Updated upstream
-=======
 from typing import List
->>>>>>> Stashed changes
 
 
 files_extension_to_folders = {
@@ -44,11 +38,6 @@ empty_folders = []
 folders_to_rename = []
 
 
-<<<<<<< Updated upstream
-def find_files(path: str) -> None:
-
-    for i in Path(path).iterdir():
-=======
 def find_files(path: Path) -> None:
     """
     Recursive searching files for sorting
@@ -56,7 +45,6 @@ def find_files(path: Path) -> None:
     :return: None
     """
     for i in path.iterdir():
->>>>>>> Stashed changes
 
         if i.is_file():
 
@@ -76,12 +64,6 @@ def find_files(path: Path) -> None:
                 elif ext in files_extension_to_folders['audio']:
                     move_file(i, new_name, ext, 'audio')
 
-<<<<<<< Updated upstream
-                elif ext in files_extension_to_folders['install']:
-                    move_file(i, new_name, ext, 'install')
-
-=======
->>>>>>> Stashed changes
                 elif ext in files_extension_to_folders['archives']:
                     unpack_archive_file(i, new_name, ext, 'archives')
 
@@ -95,9 +77,6 @@ def find_files(path: Path) -> None:
             find_files(i)
 
 
-<<<<<<< Updated upstream
-def move_file(old_file_path, new_name, ext, folder):
-=======
 def move_file(old_file_path: Path, new_name: str, ext: str, folder: str) -> None:
     """
     Moving normalized files to categorical folders
@@ -107,7 +86,6 @@ def move_file(old_file_path: Path, new_name: str, ext: str, folder: str) -> None
     :param folder: categorical folder name (str)
     :return: None
     """
->>>>>>> Stashed changes
     new_path_file = Path(old_file_path.parent, folder)
     new_path_file.mkdir(exist_ok=True, parents=True)
     new_path = (Path(old_file_path.parent, f'{new_name}{ext}'))
@@ -115,9 +93,6 @@ def move_file(old_file_path: Path, new_name: str, ext: str, folder: str) -> None
     move(new_path, new_path_file)
 
 
-<<<<<<< Updated upstream
-def unpack_archive_file(old_file_path, new_name, ext, folder):
-=======
 def unpack_archive_file(old_file_path: Path, new_name: str, ext: str, folder: str) -> None:
     """
     Working with archives.
@@ -128,7 +103,6 @@ def unpack_archive_file(old_file_path: Path, new_name: str, ext: str, folder: st
     :param folder: collective folder for unpacking archives, 'archives' by default (str)
     :return: None
     """
->>>>>>> Stashed changes
     new_path_file = Path(old_file_path.parent, folder)
     new_path_file.mkdir(exist_ok=True, parents=True)
     new_path = (Path(old_file_path.parent, f'{new_name}{ext}'))
@@ -138,9 +112,6 @@ def unpack_archive_file(old_file_path: Path, new_name: str, ext: str, folder: st
 
 
 def normalize(old_name: str) -> str:
-<<<<<<< Updated upstream
-
-=======
     """
     Normalizing files' & folders' names.
     Translating cyrillic symbols to latin ones.
@@ -149,22 +120,12 @@ def normalize(old_name: str) -> str:
     :param old_name: folder/file's name before normalizing (str)
     :return new_name: folder/file's name after normalizing (str)
     """
->>>>>>> Stashed changes
     new_name = old_name.translate(transliteration)
     new_name = re.sub(r'\W', '_', new_name)
 
     return new_name
 
 
-<<<<<<< Updated upstream
-def rename_folders(list_folders):
-    for folder in list_folders[::-1]:
-
-        new_folder_name = normalize(folder.name)
-
-        new_path_folder = (Path(folder.parent, f'{new_folder_name}'))
-
-=======
 def remove_empty_folders(folders: List[Path]) -> None:
     """
     Removing empty folders
@@ -184,7 +145,6 @@ def rename_folders(list_folders: List[Path]) -> None:
     for folder in list_folders[::-1]:
         new_folder_name = normalize(folder.name)
         new_path_folder = (Path(folder.parent, f'{new_folder_name}'))
->>>>>>> Stashed changes
         try:
             os.rename(folder, new_path_folder)
         except FileExistsError:
@@ -192,20 +152,6 @@ def rename_folders(list_folders: List[Path]) -> None:
             os.rename(folder, new_path_folder)
 
 
-<<<<<<< Updated upstream
-def perform():
-    sorting_folder = input('Sorting folder: ')
-
-    if not sorting_folder:
-        sorting_folder = Path().cwd()
-
-    else:
-        sorting_folder = Path(sorting_folder)
-
-    find_files(sorting_folder)
-    for folder in empty_folders:
-        folder.rmdir()
-=======
 def perform() -> None:
     """
     Starting process sorting.
@@ -228,7 +174,6 @@ def perform() -> None:
 
     find_files(path)
     remove_empty_folders(empty_folders)
->>>>>>> Stashed changes
     rename_folders(folders_to_rename)
 
 
