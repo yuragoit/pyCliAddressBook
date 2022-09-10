@@ -1,5 +1,6 @@
 import pickle
 import os
+import re
 from datetime import datetime, time
 from tools import autocompletion as ui
 # import aiopath
@@ -41,18 +42,31 @@ class Person():
         return "{} {:^15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, self.birthday)
 
 
+class Note():
+    def __init__(self, value: str, keyWords: list) -> None:
+        self.date = datetime.now().isoformat()
+        self.value = value
+        self.keyWords = keyWords
+
+    def __str__(self):
+        return "{:<25} {}".format(datetime.fromisoformat(self.date).strftime("%m/%d/%Y, %H:%M:%S"), self.value)
+
+
 class Application():
 
     def __init__(self, database):
         self.database = database
         self.persons = {}
+        self.notes = {}
         if not os.path.exists(self.database):
             file_pointer = open(self.database, 'wb')
             pickle.dump({}, file_pointer)
             file_pointer.close()
         else:
-            with open(self.database, 'rb') as person_list:
-                self.persons = pickle.load(person_list)
+            with open(self.database, 'rb') as Application:
+                dict_application = pickle.load(Application)
+                self.persons = dict_application.get("persons", self.persons)
+                self.notes = dict_application.get("notes", self.notes)
 
     def add(self):
         name, address, phone, email, birthday = self.get_details()
@@ -60,6 +74,11 @@ class Application():
             self.persons[name] = Person(name, address, phone, email, birthday)
         else:
             print("Contact already present")
+
+    def add_note(self):
+        value, keyWords = self.get_note()
+        note = Note(value, keyWords)
+        self.notes[note.date] = note
 
     def view_all(self):
         if self.persons:
@@ -85,6 +104,12 @@ class Application():
         birthday = input("Birthday: ")
         return name, address, phone, email, birthday
 
+    def get_note(self):
+        userInput = input("Note (keywords as #words#): ")
+        keywords = re.findall(r"#\w#", userInput)
+        value = userInput.replace("#", "")
+        return value, [keyword.replace("#", "") for keyword in keywords]
+
     def update(self):
         _name = input("Enter the name: ")
         if _name in self.persons:
@@ -108,7 +133,7 @@ class Application():
 
     def __del__(self):
         with open(self.database, 'wb') as db:
-            pickle.dump(self.persons, db)
+            pickle.dump({"persons": self.persons, "notes": self.notes}, db)
 
     def __str__(self):
         return CLI_UI
@@ -123,6 +148,8 @@ def CLI():
         match choice:
             case 'add':
                 app.add()
+            case 'add_note':
+                app.add_note()
             case 'view_all':
                 app.view_all()
             case 'search':

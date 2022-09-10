@@ -11,6 +11,7 @@ from prompt_toolkit.key_binding import KeyBindings
 cmd = WordCompleter(
     [
         "add",
+        "add_note",
         "view_all",
         "search",
         "update",
