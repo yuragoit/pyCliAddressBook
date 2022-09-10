@@ -1,8 +1,8 @@
 import pickle
 import os
 import re
-from datetime import datetime, time
-from tools import autocompletion as ui
+from datetime import datetime
+from tools import autocompletion as ui, validator
 from dateutil import parser
 # import aiopath
 
@@ -15,7 +15,6 @@ CMD HELPER: 1. Add (new contact) 2. View all 3. Search (contact) 4. Update (cont
 class Person():
 
     def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: datetime = None):
-        # planned refactoring to private methods (getter + setter)
         if name:
             self.name = name
         if address:
@@ -25,22 +24,10 @@ class Person():
         if email:
             self.email = email
         if birthday:
-            self.birthday = birthday
-
-    # @property
-    # def name(self):
-    #     return self.__name
-
-    # @name.setter
-    # def name(self, value):
-    #     if isinstance(value, str) and value.isalpha():
-    #         self.__value = value
-    #     else:
-    #         print("Please enter a valid Name")
-    #     return self.__value
+            self.birthday = parser.parse(birthday)
 
     def __str__(self):
-        return "{} {:>15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, str(self.birthday.date()))
+        return "{:<25} {}".format(datetime.fromisoformat(self.date).strftime("%m/%d/%Y, %H:%M:%S"), self.value)
 
 
 class Note():
@@ -93,18 +80,16 @@ class AddressBook():
     def search(self):
         name = input("Enter the name: ")
         if name in self.persons:
-            # print(self.persons[name].__dict__.values())
-            # print(self.persons[name].__dict__["birthday"])
             print(self.persons[name])
         else:
             print("Contact not found")
 
     def get_details(self):
-        name = input("Name: ")
+        name = validator.name_validator()
         address = input("Address: ")
-        phone = input("Phone: ")
-        email = input("Email: ")
-        birthday = parser.parse(input("Birthday: "))
+        phone = validator.phone_check()
+        email = validator.email_check()
+        birthday = input("Birthday [format yyyy-mm-dd]: ")
         return name, address, phone, email, birthday
 
     def get_note(self):
@@ -114,11 +99,12 @@ class AddressBook():
         return value, [keyword.replace("#", "") for keyword in keywords]
 
     def update(self):
-        _name = input("Enter the name: ")
-        if _name in self.persons:
-            print("Found. Enter new details")
+        dict_name = input("Enter the name: ")
+        if dict_name in self.persons:
+            print("Found. Enter new details and keep empty fields if no any changes")
             name, address, phone, email, birthday = self.get_details()
-            self.persons[_name].__init__(name, address, phone, email, birthday)
+            self.persons[dict_name].__init__(
+                name, address, phone, email, birthday)
             print("Address book successfully updated")
         else:
             print("Contact not found")
@@ -137,7 +123,6 @@ class AddressBook():
     def get_birthdays(self):
         gap_days = int(input("Enter timedelta for birthday: "))
         current_date = datetime.now()  # current date
-        gap_days = 30  # gap
         result = {}
 
         for name in self.persons:
