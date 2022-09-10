@@ -27,7 +27,7 @@ class Person():
             self.birthday = parser.parse(birthday)
 
     def __str__(self):
-        return "{:<25} {}".format(datetime.fromisoformat(self.date).strftime("%m/%d/%Y, %H:%M:%S"), self.value)
+        return "{} {:>15} {:>15} {:>15} {:>15}".format(self.name, self.address, self.phone, self.email, str(self.birthday.date()))
 
 
 class Note():
