@@ -20,16 +20,11 @@ console = Console()
 class Person():
 
     def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: datetime = None):
-        if name:
-            self.name = name
-        if address:
-            self.address = address
-        if phone:
-            self.phone = phone
-        if email:
-            self.email = email
-        if birthday:
-            self.birthday = parser.parse(birthday)
+        self.name = name
+        self.address = address
+        self.phone = phone
+        self.email = email
+        self.birthday = parser.parse(birthday)
 
     def __str__(self):
         table = Table(show_header=False,
@@ -39,7 +34,7 @@ class Person():
             f'[cyan]{self.email}[/cyan]', f'[cyan]{self.birthday.date()}[/cyan]'
         )
         console.print(table)
-        return "-"*56
+        return f"{self.name}, {self.address}, {self.phone}, {self.email}, {self.birthday}"
 
 
 class Note():
@@ -69,7 +64,12 @@ class AddressBook():
                 self.notes = dict_application.get("notes", self.notes)
 
     def add(self):
-        name, address, phone, email, birthday = self.get_details()
+
+        name, _address, _phone, _email, _birthday = self.get_details()
+        address = _address or "NULL"
+        phone = _phone or "NULL"
+        email = _email or "NULL"
+        birthday = _birthday or "1900-01-01"
         if name not in self.persons:
             self.persons[name] = Person(name, address, phone, email, birthday)
         else:
@@ -127,7 +127,13 @@ class AddressBook():
         dict_name = input("Enter the name: ")
         if dict_name in self.persons:
             print("Found. Enter new details and keep empty fields if no any changes")
-            name, address, phone, email, birthday = self.get_details()
+            _name, _address, _phone, _email, _birthday = self.get_details()
+            name = _name or self.persons[dict_name].__dict__["name"]
+            address = _address or self.persons[dict_name].__dict__["address"]
+            phone = _phone or self.persons[dict_name].__dict__["phone"]
+            email = _email or self.persons[dict_name].__dict__["email"]
+            birthday = _birthday or self.persons[dict_name].__dict__[
+                "birthday"]
             self.persons[dict_name].__init__(
                 name, address, phone, email, birthday)
             print("Address book successfully updated")

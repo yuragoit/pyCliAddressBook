@@ -1,3 +1,4 @@
+from email.policy import default
 import phonenumbers
 import re
 
@@ -26,7 +27,7 @@ def phone_check():
         phone = input("Phone: ")
         if not phone:
             break
-        iso_code = input("ISO country code like UA, GB, PL etc.: ")
+        iso_code = input("ISO country code like UA, GB, PL etc.: ").upper()
 
         pattern = phonenumbers.parse(phone, iso_code)
         if not phone or phonenumbers.is_valid_number(pattern):
