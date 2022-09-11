@@ -15,6 +15,7 @@ cmd = WordCompleter(
         "view_all",
         "view_all_notes",
         "search",
+        "find",
         "search_notes",
         "sort_birthday",
         "update",
