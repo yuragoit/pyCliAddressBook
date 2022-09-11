@@ -108,6 +108,12 @@ class AddressBook():
             print(self.persons[name])
         else:
             print("Contact not found")
+            
+    def find(self):
+        obj = input('What do you want to find? ')
+        for contact in self.persons.values():
+            if obj in f'{contact.name} {contact.address} {contact.phone} {contact.email} {contact.birthday.date()}':
+                print(contact)
 
     def get_details(self):
         name = validator.name_validator()
@@ -204,6 +210,8 @@ def CLI():
                 app.view_all()
             case 'search':
                 app.search()
+            case 'find':
+                app.find()
             case 'update':
                 app.update()
             case 'delete':
