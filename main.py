@@ -30,6 +30,9 @@ class Person():
         return self.__dict__[i]
 
     def __str__(self):
+        return f"{self.name}, {self.address}, {self.phone}, {self.email}, {self.birthday.date()}"
+    
+    def print_tab(self):
         table = Table(show_header=False,
                       header_style="bold blue", show_lines=True)
         table.add_row(
@@ -37,7 +40,6 @@ class Person():
             f'[cyan]{self.email}[/cyan]', f'[cyan]{self.birthday.date()}[/cyan]'
         )
         console.print(table)
-        return f"{self.name}, {self.address}, {self.phone}, {self.email}, {self.birthday}"
 
 
 class Note():
@@ -118,7 +120,7 @@ class AddressBook():
     def search(self):
         name = input("Enter the name: ")
         if name in self.persons:
-            print(self.persons[name])
+            self.persons[name].print_tab()
         else:
             print("Contact not found")
 
@@ -167,10 +169,18 @@ class AddressBook():
             print(f"no notes with key word {keyword}")
 
     def find(self):
+        count = 0
         obj = input('What do you want to find? ')
+
         for contact in self.persons.values():
-            if obj in f'{contact.name} {contact.address} {contact.phone} {contact.email} {contact.birthday.date()}':
-                print(contact)
+            if obj.lower() in str(contact).lower():
+                count += 1
+                contact.print_tab()
+
+        if count == 0:
+            print('No matches found')
+        else:
+            print(f'Found {count} matches')
 
     def get_details(self):
         name = validator.name_validator()
