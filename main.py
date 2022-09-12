@@ -2,6 +2,7 @@ import pickle
 import os
 import re
 from datetime import datetime
+from turtle import st
 from tools import autocompletion as ui, validator
 from tools import sorting
 from dateutil import parser
@@ -42,6 +43,16 @@ class Note():
         self.date = datetime.now().isoformat()
         self.value = value
         self.keyWords = keyWords
+
+    def get_keywords(self):
+        return ", ".join(self.keyWords)
+
+    def print_in_table(self):
+        table = Table(show_header=False,
+                      header_style="bold blue", show_lines=True)
+        table.add_row(
+            f'[cyan]{datetime.fromisoformat(self.date).strftime("%m/%d/%Y, %H:%M:%S")}[/cyan]', f'[cyan]{self.value}[/cyan]')
+        console.print(table)
 
     def __str__(self):
         return "{:<25} {}".format(datetime.fromisoformat(self.date).strftime("%m/%d/%Y, %H:%M:%S"), self.value)
@@ -108,7 +119,21 @@ class AddressBook():
             print(self.persons[name])
         else:
             print("Contact not found")
-            
+
+    def search_notes(self):
+        keyword = input("Enter the keyword: ")
+        note_list = []
+        for note in self.notes.values():
+            keywords = note.get_keywords()
+            if keyword in keywords:
+                note_list.append(note)
+
+        if note_list:
+            for note in note_list:
+                note.print_in_table()
+        else:
+            print(f"no notes with key word {keyword}")
+
     def find(self):
         obj = input('What do you want to find? ')
         for contact in self.persons.values():
@@ -125,9 +150,9 @@ class AddressBook():
 
     def get_note(self):
         userInput = input("Note (keywords as #words#): ")
-        keywords = re.findall(r"#\w#", userInput)
+        keywords = re.findall(r"\#.+\#", userInput)
         value = userInput.replace("#", "")
-        return value, [keyword.replace("#", "") for keyword in keywords]
+        return value, [keyword.replace("#", "").strip() for keyword in keywords]
 
     def update(self):
         dict_name = input("Enter the name: ")
@@ -204,12 +229,14 @@ def CLI():
         match choice:
             case 'add':
                 app.add()
-            case 'add_note':
+            case 'add_notes':
                 app.add_note()
             case 'view_all':
                 app.view_all()
             case 'search':
                 app.search()
+            case 'search_notes':
+                app.search_notes()
             case 'find':
                 app.find()
             case 'update':
