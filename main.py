@@ -11,8 +11,7 @@ from rich.table import Table
 # import aiopath
 
 CLI_UI = '''
-CMD HELPER: 1. Add (new contact) 2. View all 3. Search (contact) 4. Update (contact) 5. Delete (contact) 6. Reset all 
-7. File sort 8. Exit
+CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10.Exit
 '''
 
 console = Console()
@@ -26,6 +25,9 @@ class Person():
         self.phone = phone
         self.email = email
         self.birthday = parser.parse(birthday)
+
+    def __getitem__(self, i):
+        return self.__dict__[i]
 
     def __str__(self):
         table = Table(show_header=False,
@@ -189,12 +191,11 @@ class AddressBook():
         if dict_name in self.persons:
             print("Found. Enter new details and keep empty fields if no any changes")
             _name, _address, _phone, _email, _birthday = self.get_details()
-            name = _name or self.persons[dict_name].__dict__["name"]
-            address = _address or self.persons[dict_name].__dict__["address"]
-            phone = _phone or self.persons[dict_name].__dict__["phone"]
-            email = _email or self.persons[dict_name].__dict__["email"]
-            birthday = _birthday or self.persons[dict_name].__dict__[
-                "birthday"]
+            name = _name or self.persons[dict_name]["name"]
+            address = _address or self.persons[dict_name]["address"]
+            phone = _phone or self.persons[dict_name]["phone"]
+            email = _email or self.persons[dict_name]["email"]
+            birthday = _birthday or str(self.persons[dict_name]["birthday"])
             self.persons[dict_name].__init__(
                 name, address, phone, email, birthday)
             print("Address book successfully updated")
@@ -218,7 +219,7 @@ class AddressBook():
         result = {}
 
         for name in self.persons:
-            bday = self.persons[name].__dict__["birthday"]
+            bday = self.persons[name]["birthday"]
             try:
                 mappedbday = bday.replace(year=current_date.year)
             except ValueError:
@@ -275,7 +276,6 @@ def CLI():
                 app.delete()
             case 'reset':
                 app.reset()
-            # scheduled developing process - integrate module from HW6, HW7
             case 'file_sort':
                 sorting.perform()
             case 'sort_birthday':
