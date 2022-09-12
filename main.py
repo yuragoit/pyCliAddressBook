@@ -121,16 +121,46 @@ class AddressBook():
             print("Contact not found")
 
     def search_notes(self):
-        keyword = input("Enter the keyword: ")
+        keyword = input("what to look for?: ")
+        note_list_keyword = []
         note_list = []
         for note in self.notes.values():
             keywords = note.get_keywords()
             if keyword in keywords:
+                note_list_keyword.append(note)
+
+            if not note in note_list_keyword and keyword in str(note):
                 note_list.append(note)
 
-        if note_list:
-            for note in note_list:
-                note.print_in_table()
+        if note_list_keyword or note_list:
+            if note_list_keyword:
+
+                table = Table(show_header=True,
+                              header_style="bold blue", show_lines=True)
+                table.add_column("by key", style="dim",
+                                 width=3, justify="center")
+                table.add_column("DATE", min_width=12, justify="center")
+                table.add_column("VALUE", min_width=50, justify="center")
+
+                for idx, note in enumerate(note_list_keyword, start=1):
+                    table.add_row(
+                        str(idx), f'[cyan]{datetime.fromisoformat(note.date).strftime("%m/%d/%Y, %H:%M:%S")}[/cyan]', f'[cyan]{note.value}[/cyan]')
+
+                console.print(table)
+
+            if note_list:
+                table = Table(show_header=True,
+                              header_style="bold blue", show_lines=True)
+                table.add_column("by text", style="dim",
+                                 width=4, justify="center")
+                table.add_column("DATE", min_width=12, justify="center")
+                table.add_column("VALUE", min_width=50, justify="center")
+
+                for idx, note in enumerate(note_list, start=1):
+                    table.add_row(
+                        str(idx), f'[cyan]{datetime.fromisoformat(note.date).strftime("%m/%d/%Y, %H:%M:%S")}[/cyan]', f'[cyan]{note.value}[/cyan]')
+
+                console.print(table)
         else:
             print(f"no notes with key word {keyword}")
 
