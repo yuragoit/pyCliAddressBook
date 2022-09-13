@@ -337,6 +337,25 @@ class AddressBook:
         else:
             print("Contact not found in the app")
 
+    def delete_notes(self):
+        """
+        Deleting notes by keyword
+        :return: None
+        """
+        keyword = input("Enter the key word to note: ")
+        noteskeyToDel = []
+        for noteKey in self.notes:
+            if keyword in self.notes[noteKey].keyWords:
+                self.notes[noteKey].print_in_table()
+                print("Was deleted")
+                noteskeyToDel.append(noteKey)
+
+        if noteskeyToDel:
+            for notekey in noteskeyToDel:
+                self.notes.pop(notekey)
+        else:
+            print(f"no notes with key word {keyword}")
+
     def reset(self):
         """
         Deleting all records in address book
