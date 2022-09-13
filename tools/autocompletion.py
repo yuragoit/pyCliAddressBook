@@ -1,4 +1,5 @@
 """
+Autocomplete commands in console.
 Need to install pkg prompt_toolkit
 First time need to enter command from terminal:
 pip install prompt_toolkit
@@ -47,6 +48,11 @@ def _(event):
 
 
 def autocomplete():
+    """
+    Autocompleting commands by inputted first letters
+    :return: str
+        inputted command
+    """
     text: str = prompt("Type cmd: ", completer=cmd,
                        complete_while_typing=True, key_bindings=kb)
     return text
