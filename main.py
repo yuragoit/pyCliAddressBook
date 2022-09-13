@@ -30,7 +30,7 @@ class Person():
 
     def __str__(self):
         return f"{self.name}, {self.address}, {self.phone}, {self.email}, {self.birthday.date()}"
-    
+
     def print_tab(self):
         table = Table(show_header=False,
                       header_style="bold blue", show_lines=True)
@@ -113,6 +113,12 @@ class AddressBook():
         else:
             print("No match contacts in database")
 
+    def view_all_notes(self):
+        if self.notes:
+            self.print_notes_in_table(self.notes.values(), "#")
+        else:
+            print("No match notes in database")
+
     def search(self):
         name = input("Enter the name: ")
         if name in self.persons:
@@ -134,33 +140,11 @@ class AddressBook():
 
         if note_list_keyword or note_list:
             if note_list_keyword:
-
-                table = Table(show_header=True,
-                              header_style="bold blue", show_lines=True)
-                table.add_column("by key", style="dim",
-                                 width=3, justify="center")
-                table.add_column("DATE", min_width=12, justify="center")
-                table.add_column("VALUE", min_width=50, justify="center")
-
-                for idx, note in enumerate(note_list_keyword, start=1):
-                    table.add_row(
-                        str(idx), f'[cyan]{datetime.fromisoformat(note.date).strftime("%m/%d/%Y, %H:%M:%S")}[/cyan]', f'[cyan]{note.value}[/cyan]')
-
-                console.print(table)
+                self.print_notes_in_table(note_list_keyword, "by key")
 
             if note_list:
-                table = Table(show_header=True,
-                              header_style="bold blue", show_lines=True)
-                table.add_column("by text", style="dim",
-                                 width=4, justify="center")
-                table.add_column("DATE", min_width=12, justify="center")
-                table.add_column("VALUE", min_width=50, justify="center")
+                self.print_notes_in_table(note_list, "by text")
 
-                for idx, note in enumerate(note_list, start=1):
-                    table.add_row(
-                        str(idx), f'[cyan]{datetime.fromisoformat(note.date).strftime("%m/%d/%Y, %H:%M:%S")}[/cyan]', f'[cyan]{note.value}[/cyan]')
-
-                console.print(table)
         else:
             print(f"no notes with key word {keyword}")
 
@@ -191,7 +175,7 @@ class AddressBook():
     def get_note():
         userInput = input("Note (keywords as #words#): ")
         keywords = re.findall(r"\#.+\#", userInput)
-        value = userInput.replace("#", "")
+        value = userInput.strip()
         return value, [keyword.replace("#", "").strip() for keyword in keywords]
 
     def update(self):
@@ -220,6 +204,9 @@ class AddressBook():
 
     def reset(self):
         self.persons = {}
+
+    def reset_notes(self):
+        self.notes = {}
 
     def get_birthdays(self):
         gap_days = int(input("Enter timedelta for birthday: "))
@@ -254,6 +241,22 @@ class AddressBook():
         with open(self.database, 'wb') as db:
             pickle.dump({"persons": self.persons, "notes": self.notes}, db)
 
+    @staticmethod
+    def print_notes_in_table(notes: list, table_name: str):
+
+        table = Table(show_header=True,
+                      header_style="bold blue", show_lines=True)
+        table.add_column(table_name, style="dim",
+                         width=5, justify="center")
+        table.add_column("DATE", min_width=12, justify="center")
+        table.add_column("VALUE", min_width=50, justify="center")
+
+        for idx, note in enumerate(notes, start=1):
+            table.add_row(str(
+                idx), f'[cyan]{datetime.fromisoformat(note.date).strftime("%m/%d/%Y, %H:%M:%S")}[/cyan]', f'[cyan]{note.value}[/cyan]')
+
+        console.print(table)
+
     def __str__(self):
         return CLI_UI
 
@@ -271,6 +274,8 @@ def CLI():
                 app.add_note()
             case 'view_all':
                 app.view_all()
+            case 'view_all_notes':
+                app.view_all_notes()
             case 'search':
                 app.search()
             case 'search_notes':
@@ -283,6 +288,9 @@ def CLI():
                 app.delete()
             case 'reset':
                 app.reset()
+            # scheduled developing process - integrate module from HW6, HW7
+            case 'reset_notes':
+                app.reset_notes()
             case 'file_sort':
                 sorting.perform()
             case 'sort_birthday':
