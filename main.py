@@ -16,9 +16,45 @@ CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.
 console = Console()
 
 
-class Person():
+class Person:
+    """
+    A class is used to create fields to address book.
+    ________________________________________________
 
-    def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: datetime = None):
+    Attributes
+    __________
+    name : str
+        name of the contact
+    address : str
+        address of the contact
+    phone : str
+        phone of the contact
+    email : str
+        email of the contact
+    birthday : str
+        birthday of the contact
+
+    Methods
+    _______
+    print_tab
+        used to show info about the contact as a table
+
+    """
+
+    def __init__(self, name: str = None, address: str = None, phone: str = None, email: str = None, birthday: str = None):
+        """
+        Creating fields of the address book
+        :param name: str
+            name of the contact
+        :param address: str
+            address of the contact
+        :param phone: str
+            phone of the contact
+        :param email: str
+            email of the contact
+        :param birthday: str
+            birthday of the contact
+        """
         self.name = name
         self.address = address
         self.phone = phone
@@ -29,9 +65,17 @@ class Person():
         return self.__dict__[i]
 
     def __str__(self):
+        """
+        Returning all data of the contact as a string
+        :return: str
+        """
         return f"{self.name}, {self.address}, {self.phone}, {self.email}, {self.birthday.date()}"
 
     def print_tab(self):
+        """
+        Printing data of the contact as a formatted table
+        :return: None
+        """
         table = Table(show_header=False,
                       header_style="bold blue", show_lines=True)
         table.add_row(
