@@ -140,7 +140,10 @@ class Note:
         return "{:<25} {}".format(datetime.fromisoformat(self.date).strftime("%m/%d/%Y, %H:%M:%S"), self.value)
 
 
-class AddressBook():
+class AddressBook:
+    """
+    This class maneges elements of address book & diary.
+    """
 
     def __init__(self, database):
         self.database = database
@@ -157,6 +160,11 @@ class AddressBook():
                 self.notes = dict_application.get("notes", self.notes)
 
     def add(self):
+        """
+        Adding record to the addressbook with fields:
+        name, address, phone, email, birthday
+        :return: None
+        """
         name, _address, _phone, _email, _birthday = self.get_details()
         address = _address or "NULL"
         phone = _phone or "NULL"
@@ -168,11 +176,20 @@ class AddressBook():
             print("Contact already present")
 
     def add_note(self):
+        """
+        Adding record to diary with fields note & keywords.
+        Keywords are written down together with note, each keyword is enclosed on both sides by symbol #
+        :return: None
+        """
         value, keyWords = self.get_note()
         note = Note(value, keyWords)
         self.notes[note.date] = note
 
     def view_all(self):
+        """
+        Printing whole address book as a formatted table
+        :return: None
+        """
         if self.persons:
             table = Table(show_header=True,
                           header_style="bold blue", show_lines=True)
@@ -193,12 +210,21 @@ class AddressBook():
             print("No match contacts in database")
 
     def view_all_notes(self):
+        """
+        Printing all notes as a formatted table
+        :return: None
+        """
         if self.notes:
             self.print_notes_in_table(self.notes.values(), "#")
         else:
             print("No match notes in database")
 
     def search(self):
+        """
+        Searching record in address book by name
+        and printing found record as a formatted table
+        :return: None
+        """
         name = input("Enter the name: ")
         if name in self.persons:
             self.persons[name].print_tab()
@@ -206,6 +232,11 @@ class AddressBook():
             print("Contact not found")
 
     def search_notes(self):
+        """
+        Searching note by text or keyword
+        and printing found notes as a formatted table
+        :return: None
+        """
         keyword = input("What are you looking for?: ")
         note_list_keyword = []
         note_list = []
@@ -228,6 +259,11 @@ class AddressBook():
             print(f"no notes with key word {keyword}")
 
     def find(self):
+        """
+        Searching contact in address book by any field
+        and printing found contacts as a formatted table
+        :return: None
+        """
         count = 0
         obj = input('What do you want to find? ')
 
@@ -243,6 +279,11 @@ class AddressBook():
 
     @staticmethod
     def get_details():
+        """
+        Getting info for fields in address book from user
+        :return: tuple
+            fields of address book: name, address, phone, email, birthday
+        """
         name = validator.name_validator()
         address = input("Address: ")
         phone = validator.phone_check()
@@ -252,12 +293,23 @@ class AddressBook():
 
     @staticmethod
     def get_note():
+        """
+        Getting note and keywords from user
+        :return: tuple
+            1st element: note
+            2nd element: list of the keywords
+        """
         userInput = input("Note (keywords as #words#): ")
         keywords = re.findall(r"\#.+\#", userInput)
         value = userInput.strip()
         return value, [keyword.replace("#", "").strip() for keyword in keywords]
 
     def update(self):
+        """
+        Updating record in address book.
+        You can change one field or all ones immediately
+        :return: None
+        """
         dict_name = input("Enter the name: ")
         if dict_name in self.persons:
             print("Found. Enter new details and keep empty fields if no any changes")
@@ -274,6 +326,10 @@ class AddressBook():
             print("Contact not found")
 
     def delete(self):
+        """
+        Deleting record in address book by name
+        :return: None
+        """
         name = input("Enter the name to delete: ")
         if name in self.persons:
             del self.persons[name]
@@ -282,12 +338,25 @@ class AddressBook():
             print("Contact not found in the app")
 
     def reset(self):
+        """
+        Deleting all records in address book
+        :return: None
+        """
         self.persons = {}
 
     def reset_notes(self):
+        """
+        Deleting all notes in diary
+        :return: None
+        """
         self.notes = {}
 
     def get_birthdays(self):
+        """
+        Printing contacts which have birthday in defined period
+        :return: dict
+            dictionary of found contacts
+        """
         gap_days = int(input("Enter timedelta for birthday: "))
         current_date = datetime.now()  # current date
         result = {}
@@ -322,6 +391,14 @@ class AddressBook():
 
     @staticmethod
     def print_notes_in_table(notes: list, table_name: str):
+        """
+        Printing notes as a formatted table
+        :param notes: list
+            list of the selected notes
+        :param table_name: str
+            name of the formatted table
+        :return: None
+        """
 
         table = Table(show_header=True,
                       header_style="bold blue", show_lines=True)
@@ -340,7 +417,7 @@ class AddressBook():
         return CLI_UI
 
 
-def CLI():
+def cli():
     app = AddressBook('contacts.data')
     choice = ''
     while choice != 'exit':
@@ -381,4 +458,4 @@ def CLI():
 
 
 if __name__ == '__main__':
-    CLI()
+    cli()
