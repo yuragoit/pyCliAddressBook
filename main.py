@@ -325,6 +325,21 @@ class AddressBook:
         else:
             print("Contact not found")
 
+    def update_notes(self):
+        keyword = input("Enter the key word to note: ")
+        noteskeyToUpdate = []
+        for noteKey in self.notes:
+            if keyword in self.notes[noteKey].keyWords:
+                self.notes[noteKey].print_in_table()
+                print("Will be changed")
+                value, keyWords = self.get_note()
+                self.notes[noteKey].keyWords = keyWords
+                self.notes[noteKey].value = value
+                noteskeyToUpdate.append(noteKey)
+
+        if not noteskeyToUpdate:
+            print(f"no notes with key word {keyword}")
+
     def delete(self):
         """
         Deleting record in address book by name
@@ -459,8 +474,12 @@ def cli():
                 app.find()
             case 'update':
                 app.update()
+            case 'update_notes':
+                app.update_notes()
             case 'delete':
                 app.delete()
+            case 'delete_notes':
+                app.delete_notes()
             case 'reset':
                 app.reset()
             # scheduled developing process - integrate module from HW6, HW7
