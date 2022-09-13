@@ -41,7 +41,8 @@ folders_to_rename = []
 def find_files(path: Path) -> None:
     """
     Recursive searching files for sorting
-    :param path: selected folder for sorting (Path)
+    :param path: Path
+        selected folder for sorting
     :return: None
     """
     for i in path.iterdir():
@@ -80,10 +81,14 @@ def find_files(path: Path) -> None:
 def move_file(old_file_path: Path, new_name: str, ext: str, folder: str) -> None:
     """
     Moving normalized files to categorical folders
-    :param old_file_path:old file location (Path)
-    :param new_name: normalized file name (str)
-    :param ext: file extension (str)
-    :param folder: categorical folder name (str)
+    :param old_file_path: Path
+        old file location
+    :param new_name: str
+        normalized file name
+    :param ext: str
+        file extension
+    :param folder: str
+        categorical folder name
     :return: None
     """
     new_path_file = Path(old_file_path.parent, folder)
@@ -97,10 +102,14 @@ def unpack_archive_file(old_file_path: Path, new_name: str, ext: str, folder: st
     """
     Working with archives.
     Moving archives to the folder 'archives' and unpacking they there
-    :param old_file_path: archive location (Path)
-    :param new_name: folder name of unpacking archive (str)
-    :param ext: archive extension (str)
-    :param folder: collective folder for unpacking archives, 'archives' by default (str)
+    :param old_file_path: Path
+        archive location
+    :param new_name: str
+        folder name of unpacking archive
+    :param ext: str
+        archive extension
+    :param folder: str
+        collective folder for unpacking archives, 'archives' by default
     :return: None
     """
     new_path_file = Path(old_file_path.parent, folder)
@@ -116,9 +125,10 @@ def normalize(old_name: str) -> str:
     Normalizing files' & folders' names.
     Translating cyrillic symbols to latin ones.
     Amending unacceptable symbols to '_' symbol.
-
-    :param old_name: folder/file's name before normalizing (str)
-    :return new_name: folder/file's name after normalizing (str)
+    :param old_name: str
+        folder/file's name before normalizing
+    :return new_name: str
+        folder/file's name after normalizing
     """
     new_name = old_name.translate(transliteration)
     new_name = re.sub(r'\W', '_', new_name)
@@ -129,7 +139,8 @@ def normalize(old_name: str) -> str:
 def remove_empty_folders(folders: List[Path]) -> None:
     """
     Removing empty folders
-    :param folders: list of empty folder in sorting folder (list)
+    :param folders: list
+        list of empty folder in sorting folder
     :return: None
     """
     for folder in folders:
@@ -139,7 +150,8 @@ def remove_empty_folders(folders: List[Path]) -> None:
 def rename_folders(list_folders: List[Path]) -> None:
     """
     Renaming folders
-    :param list_folders: folder list for normalizing (list)
+    :param list_folders: list
+        folder list for normalizing
     :return: None
     """
     for folder in list_folders[::-1]:
@@ -177,6 +189,6 @@ def perform() -> None:
     rename_folders(folders_to_rename)
     print('sorting is complete')
 
+
 if __name__ == '__main__':
     perform()
-    
