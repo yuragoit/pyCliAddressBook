@@ -456,6 +456,11 @@ class AddressBook:
 
 
 def cli():
+    """
+    Comparing inputted command with existing ones
+    and performing correspondent command
+    :return: None
+    """
     app = AddressBook('contacts.data')
     choice = ''
     while choice != 'exit':
