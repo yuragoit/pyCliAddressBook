@@ -49,7 +49,6 @@ def _(event):
 def autocomplete():
     text: str = prompt("Type cmd: ", completer=cmd,
                        complete_while_typing=True, key_bindings=kb)
-    # print("CMD is: %s" % text)
     return text
 
 

@@ -2,13 +2,12 @@ import pickle
 import os
 import re
 from datetime import datetime
-from turtle import st
 from tools import autocompletion as ui, validator
 from tools import sorting
 from dateutil import parser
 from rich.console import Console
 from rich.table import Table
-# import aiopath
+
 
 CLI_UI = '''
 CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10.Exit
@@ -79,7 +78,6 @@ class AddressBook():
                 self.notes = dict_application.get("notes", self.notes)
 
     def add(self):
-
         name, _address, _phone, _email, _birthday = self.get_details()
         address = _address or "NULL"
         phone = _phone or "NULL"
@@ -97,8 +95,6 @@ class AddressBook():
 
     def view_all(self):
         if self.persons:
-            # print("{} {:>15} {:>15} {:>15} {:>15}".format(
-            #     'NAME', 'ADDRESS', 'PHONE', 'EMAIL', 'BIRTHDAY'))
             table = Table(show_header=True,
                           header_style="bold blue", show_lines=True)
             table.add_column("#", style="dim", width=3, justify="center")
@@ -131,7 +127,7 @@ class AddressBook():
             print("Contact not found")
 
     def search_notes(self):
-        keyword = input("what to look for?: ")
+        keyword = input("What are you looking for?: ")
         note_list_keyword = []
         note_list = []
         for note in self.notes.values():
@@ -166,7 +162,8 @@ class AddressBook():
         else:
             print(f'Found {count} matches')
 
-    def get_details(self):
+    @staticmethod
+    def get_details():
         name = validator.name_validator()
         address = input("Address: ")
         phone = validator.phone_check()
@@ -174,7 +171,8 @@ class AddressBook():
         birthday = input("Birthday [format yyyy-mm-dd]: ")
         return name, address, phone, email, birthday
 
-    def get_note(self):
+    @staticmethod
+    def get_note():
         userInput = input("Note (keywords as #words#): ")
         keywords = re.findall(r"\#.+\#", userInput)
         value = userInput.strip()
@@ -236,7 +234,6 @@ class AddressBook():
                         result[current_date.strftime('%A')] = [name]
 
         for day, names in result.items():
-            # print(self.persons[name])
             print(f"Start reminder on {day}: {', '.join(names)}")
         return result
 
