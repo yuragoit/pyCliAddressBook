@@ -326,6 +326,10 @@ class AddressBook:
             print("Contact not found")
 
     def update_notes(self):
+        """
+        Amending notes and keywords by searching keyword
+        :return: None
+        """
         keyword = input("Enter the key word to note: ")
         noteskeyToUpdate = []
         for noteKey in self.notes:
