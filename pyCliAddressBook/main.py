@@ -2,9 +2,9 @@ import pickle
 import os
 import re
 from datetime import datetime
-import autocompletion as ui
-import validator
-import sorting
+import pyCliAddressBook.autocompletion as ui
+import pyCliAddressBook.validator as validator
+import pyCliAddressBook.sorting as sorting
 from dateutil import parser
 from rich.console import Console
 from rich.table import Table
