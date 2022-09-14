@@ -146,6 +146,9 @@ def remove_empty_folders(folders: List[Path]) -> None:
     for folder in folders:
         folder.rmdir()
 
+    global empty_folders
+    empty_folders = []
+
 
 def rename_folders(list_folders: List[Path]) -> None:
     """
@@ -163,12 +166,14 @@ def rename_folders(list_folders: List[Path]) -> None:
             new_path_folder = (Path(folder.parent, f'{new_folder_name}_1'))
             os.rename(folder, new_path_folder)
 
+    global folders_to_rename
+    folders_to_rename = []
+
 
 def perform() -> None:
     """
-    Starting process sorting.
-    Checking path on valid
-    :return: None
+    Sorting files to categorical folders. Normalising names of files & folders.
+    Remoting empty folders. Unpacking archives.
     """
 
     while True:

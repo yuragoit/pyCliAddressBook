@@ -27,6 +27,7 @@ cmd = WordCompleter(
         "reset_notes",
         "file_sort",
         "exit",
+        "help"
     ],
     ignore_case=True,
 )
