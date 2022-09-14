@@ -1,2 +1,0 @@
-# pyCliAddressBook
-Project 01
