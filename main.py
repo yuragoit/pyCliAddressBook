@@ -10,7 +10,7 @@ from rich.table import Table
 
 
 CLI_UI = '''
-CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10.Exit 11.Help
+CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10. Help 11.Exit
 '''
 
 console = Console()
@@ -376,7 +376,7 @@ class AddressBook:
         Printing contacts which have birthday in defined period
         """
         gap_days = int(input("Enter timedelta for birthday: "))
-        current_date = datetime.now()  # current date
+        current_date = datetime.now()
         result = {}
 
         for name in self.persons:
@@ -509,7 +509,6 @@ def cli():
             case 'reset':
                 print(app.reset.__doc__)
                 app.reset()
-            # scheduled developing process - integrate module from HW6, HW7
             case 'reset_notes':
                 print(app.reset_notes.__doc__)
                 app.reset_notes()
