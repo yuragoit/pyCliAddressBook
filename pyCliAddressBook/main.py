@@ -11,7 +11,7 @@ from rich.table import Table
 
 
 CLI_UI = '''
-CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10.Exit
+CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10. Help 11.Exit
 '''
 
 console = Console()
@@ -163,9 +163,7 @@ class AddressBook:
 
     def add(self):
         """
-        Adding record to the addressbook with fields:
-        name, address, phone, email, birthday
-        :return: None
+        Adding record to the address book with fields: name, address, phone, email, birthday
         """
         name, _address, _phone, _email, _birthday = self.get_details()
         address = _address or "NULL"
@@ -181,7 +179,6 @@ class AddressBook:
         """
         Adding record to diary with fields note & keywords.
         Keywords are written down together with note, each keyword is enclosed on both sides by symbol #
-        :return: None
         """
         value, keyWords = self.get_note()
         note = Note(value, keyWords)
@@ -190,7 +187,6 @@ class AddressBook:
     def view_all(self):
         """
         Printing whole address book as a formatted table
-        :return: None
         """
         if self.persons:
             table = Table(show_header=True,
@@ -214,7 +210,6 @@ class AddressBook:
     def view_all_notes(self):
         """
         Printing all notes as a formatted table
-        :return: None
         """
         if self.notes:
             self.print_notes_in_table(self.notes.values(), "#")
@@ -223,9 +218,7 @@ class AddressBook:
 
     def search(self):
         """
-        Searching record in address book by name
-        and printing found record as a formatted table
-        :return: None
+        Searching record in address book by name and printing found record as a formatted table
         """
         name = input("Enter the name: ")
         if name in self.persons:
@@ -235,9 +228,7 @@ class AddressBook:
 
     def search_notes(self):
         """
-        Searching note by text or keyword
-        and printing found notes as a formatted table
-        :return: None
+        Searching note by text or keyword and printing found notes as a formatted table
         """
         keyword = input("What are you looking for?: ")
         note_list_keyword = []
@@ -262,9 +253,7 @@ class AddressBook:
 
     def find(self):
         """
-        Searching contact in address book by any field
-        and printing found contacts as a formatted table
-        :return: None
+        Searching contact in address book by any field and printing found contacts as a formatted table
         """
         count = 0
         obj = input('What do you want to find? ')
@@ -308,9 +297,7 @@ class AddressBook:
 
     def update(self):
         """
-        Updating record in address book.
-        You can change one field or all ones immediately
-        :return: None
+        Updating record in address book. You can change one field or all ones immediately
         """
         dict_name = input("Enter the name: ")
         if dict_name in self.persons:
@@ -330,7 +317,6 @@ class AddressBook:
     def update_notes(self):
         """
         Amending notes and keywords by searching keyword
-        :return: None
         """
         keyword = input("Enter the key word to note: ")
         noteskeyToUpdate = []
@@ -349,7 +335,6 @@ class AddressBook:
     def delete(self):
         """
         Deleting record in address book by name
-        :return: None
         """
         name = input("Enter the name to delete: ")
         if name in self.persons:
@@ -361,7 +346,6 @@ class AddressBook:
     def delete_notes(self):
         """
         Deleting notes by keyword
-        :return: None
         """
         keyword = input("Enter the key word to note: ")
         noteskeyToDel = []
@@ -380,25 +364,21 @@ class AddressBook:
     def reset(self):
         """
         Deleting all records in address book
-        :return: None
         """
         self.persons = {}
 
     def reset_notes(self):
         """
         Deleting all notes in diary
-        :return: None
         """
         self.notes = {}
 
     def get_birthdays(self):
         """
         Printing contacts which have birthday in defined period
-        :return: dict
-            dictionary of found contacts
         """
         gap_days = int(input("Enter timedelta for birthday: "))
-        current_date = datetime.now()  # current date
+        current_date = datetime.now()
         result = {}
 
         for name in self.persons:
@@ -424,6 +404,32 @@ class AddressBook:
         for day, names in result.items():
             print(f"Start reminder on {day}: {', '.join(names)}")
         return result
+
+    @staticmethod
+    def help():
+        """
+        I'm a personal assistant. I'm able to keep an address book & a diary, to sort files.
+        You can use next functions:
+        """
+        functions = {'add': AddressBook.add,
+                     'add_note': AddressBook.add_note,
+                     'view_all': AddressBook.view_all,
+                     'view_all_notes': AddressBook.view_all_notes,
+                     'search': AddressBook.search,
+                     'search_notes': AddressBook.search_notes,
+                     'find': AddressBook.find,
+                     'update': AddressBook.update,
+                     'update_notes': AddressBook.update_notes,
+                     'delete': AddressBook.delete,
+                     'delete_notes': AddressBook.delete_notes,
+                     'reset': AddressBook.reset,
+                     'reset_notes': AddressBook.reset_notes,
+                     'sort_birthday': AddressBook.get_birthdays,
+                     'file_sort': sorting.perform
+                     }
+        for name, function in functions.items():
+            print(name)
+            print(f'\t{function.__doc__}')
 
     def __del__(self):
         with open(self.database, 'wb') as db:
@@ -470,36 +476,53 @@ def cli():
         choice = ui.autocomplete()
         match choice:
             case 'add':
+                print(app.add.__doc__)
                 app.add()
             case 'add_notes':
+                print(app.add_note.__doc__)
                 app.add_note()
             case 'view_all':
+                print(app.view_all.__doc__)
                 app.view_all()
             case 'view_all_notes':
+                print(app.view_all_notes.__doc__)
                 app.view_all_notes()
             case 'search':
+                print(app.search.__doc__)
                 app.search()
             case 'search_notes':
+                print(app.search_notes.__doc__)
                 app.search_notes()
             case 'find':
+                print(app.find.__doc__)
                 app.find()
             case 'update':
+                print(app.update.__doc__)
                 app.update()
             case 'update_notes':
+                print(app.update_notes.__doc__)
                 app.update_notes()
             case 'delete':
+                print(app.delete.__doc__)
                 app.delete()
             case 'delete_notes':
+                print(app.delete_notes.__doc__)
                 app.delete_notes()
             case 'reset':
+                print(app.reset.__doc__)
                 app.reset()
-            # scheduled developing process - integrate module from HW6, HW7
             case 'reset_notes':
+                print(app.reset_notes.__doc__)
                 app.reset_notes()
             case 'file_sort':
+                print(sorting.perform.__doc__)
                 sorting.perform()
             case 'sort_birthday':
+                print(app.get_birthdays.__doc__)
                 app.get_birthdays()
+            case 'help':
+                print(app.help.__doc__)
+                app.help()
             case 'exit':
                 print("Exiting...")
             case _:
