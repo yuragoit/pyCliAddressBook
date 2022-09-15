@@ -10,7 +10,7 @@ from rich.table import Table
 
 
 CLI_UI = '''
-CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10.Exit
+CMD HELPER: 1.Add 2.View all 3.Search 4.Find 5.Sort 6.Update 7.Delete 8.Reset 9.File sort 10.Exit 11.Help
 '''
 
 console = Console()
@@ -403,26 +403,26 @@ class AddressBook:
             print(f"Start reminder on {day}: {', '.join(names)}")
         return result
 
-    @staticmethod
-    def help():
+    @classmethod
+    def help(cls):
         """
         I'm a personal assistant. I'm able to keep an address book & a diary, to sort files.
         You can use next functions:
         """
-        functions = {'add': AddressBook.add,
-                     'add_note': AddressBook.add_note,
-                     'view_all': AddressBook.view_all,
-                     'view_all_notes': AddressBook.view_all_notes,
-                     'search': AddressBook.search,
-                     'search_notes': AddressBook.search_notes,
-                     'find': AddressBook.find,
-                     'update': AddressBook.update,
-                     'update_notes': AddressBook.update_notes,
-                     'delete': AddressBook.delete,
-                     'delete_notes': AddressBook.delete_notes,
-                     'reset': AddressBook.reset,
-                     'reset_notes': AddressBook.reset_notes,
-                     'sort_birthday': AddressBook.get_birthdays,
+        functions = {'add': cls.add,
+                     'add_note': cls.add_note,
+                     'view_all': cls.view_all,
+                     'view_all_notes': cls.view_all_notes,
+                     'search': cls.search,
+                     'search_notes': cls.search_notes,
+                     'find': cls.find,
+                     'update': cls.update,
+                     'update_notes': cls.update_notes,
+                     'delete': cls.delete,
+                     'delete_notes': cls.delete_notes,
+                     'reset': cls.reset,
+                     'reset_notes': cls.reset_notes,
+                     'sort_birthday': cls.get_birthdays,
                      'file_sort': sorting.perform
                      }
         for name, function in functions.items():
