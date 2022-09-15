@@ -59,14 +59,6 @@ Install project with pip
 ```bash
   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyCliAddressBook==1.0.22
 ```
-    
-## Deployment
-
-To deploy this project run
-
-```bash
-  pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyCliAddressBook==1.0.21
-```
 
 
 ## Run Locally
