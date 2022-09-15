@@ -4,7 +4,7 @@
 - Name: pyCliAddressBook
 - Main idea of the project: creating a personal assistant with a command line interface
 - Deadline: MVP - 3 days, Prod - 2 days, presentation - 1 day
-- Stack of technologies used: OOP, functional programming, venv, Pylint, GitHub, git, Trello, Agile, Debugging, Profiling
+- Stack of technologies used: OOP, functional programming, Pylint, GitHub, git, Trello, Agile, Debugging, Profiling
 
 
 ## About the Team
@@ -103,6 +103,7 @@ Then use contextual commands with appropriate prompts in the interactive mode of
 ## Screenshots
 
 ![App Screenshot](https://user-images.githubusercontent.com/101989870/190389161-f42acfc2-9a54-4604-8c9c-4b667986814a.jpg)
+![table_format](https://user-images.githubusercontent.com/101989870/190399225-1605ba4d-65c3-464c-8129-ea18269a720f.png)
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
