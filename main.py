@@ -524,7 +524,7 @@ def cli():
             case 'exit':
                 print("Exiting...")
             case _:
-                print("Invalid choice.")
+                print("Invalid choice")
 
 
 if __name__ == '__main__':
